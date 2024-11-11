@@ -1,0 +1,21 @@
+
+# File nhạy cảm
+.env
+
+# Thư mục node_modules
+node_modules/
+
+# Thư mục build (kết quả biên dịch)
+build/
+
+# Thư mục log
+logs/
+*.log
+
+# Các file hệ thống (Windows, Mac)
+Thumbs.db
+.DS_Store
+
+# Các file khác mà bạn không muốn Git theo dõi
+.idea/
+.vscode/
