@@ -38,8 +38,7 @@ const forgotPassword = async (req, res) => {
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    const newUser = new User({ username, email, password });
-    await newUser.save();
+    const newUser = await User.create({ username, email, password });
     res.status(201).json({ username, email });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -88,6 +87,8 @@ const checkToken = async (req, res) => {
   }
   if (user.resetPasswordToken === token) {
     return res.json({ message: "token chinh xac" });
+  } else {
+    return res.json({ message: "token sai" });
   }
 };
 
