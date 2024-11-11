@@ -40,7 +40,7 @@ const register = async (req, res) => {
     const { username, email, password } = req.body;
     const newUser = new User({ username, email, password });
     await newUser.save();
-    res.status(201).json(newUser);
+    res.status(201).json({ username, email });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -55,13 +55,14 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "username không tồn tại" });
     }
 
-    console.log(password, user.password);
-
     if (password !== user.password) {
       return res.status(400).json({ message: "Sai mật khẩu" });
     }
 
-    res.json({ message: "Đăng nhập thành công", user: { username, password } });
+    res.json({
+      message: "Đăng nhập thành công",
+      user: { username, email: user.email },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
