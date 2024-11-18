@@ -22,22 +22,25 @@ const forgotPassword = async (req, res) => {
   const expiry = Date.now() + 3600000; // Thời hạn 1 giờ
   user.resetPasswordToken = token;
   user.resetPasswordExpiry = expiry;
-  await user.save().then(() => {
-    console.log("save token", token);
-  });
+  try {
+    await user.save().then(() => {
+      console.log("save token", token);
+      transporter.sendMail({
+        to: email,
+        from: "domanhthuong20122002@gmail.com",
+        subject: "Khôi phục mật khẩu",
+        text: `Nhap ma khoi phuc ${token}`,
+      });
+      console.log("------");
 
-  transporter.sendMail({
-    to: email,
-    from: "domanhthuong20122002@gmail.com",
-    subject: "Khôi phục mật khẩu",
-    text: `Nhap ma khoi phuc ${token}`,
-  });
-  console.log("------");
+      console.log("send token");
+      console.log({ email, token });
 
-  console.log("send token");
-  console.log({ email, token });
-
-  res.send("Email khôi phục mật khẩu đã được gửi");
+      res.send("Email khôi phục mật khẩu đã được gửi");
+    });
+  } catch (error) {
+    res.send("Lỗi khi gửi token");
+  }
 };
 
 const register = async (req, res) => {
