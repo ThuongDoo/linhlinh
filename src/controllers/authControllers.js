@@ -22,13 +22,15 @@ const forgotPassword = async (req, res) => {
   const expiry = Date.now() + 3600000; // Thời hạn 1 giờ
   user.resetPasswordToken = token;
   user.resetPasswordExpiry = expiry;
+  await user.save();
+
   transporter.sendMail({
     to: email,
     from: "domanhthuong20122002@gmail.com",
     subject: "Khôi phục mật khẩu",
     text: `Nhap ma khoi phuc ${token}`,
   });
-  await user.save();
+  console.log("------");
 
   console.log("send token");
   console.log({ email, token });
@@ -86,12 +88,15 @@ const checkToken = async (req, res) => {
   if (user.resetPasswordExpiry < Date.now()) {
     return res.status(400).json({ message: "token hết hạn" });
   }
+  console.log("------");
   console.log("check token");
-  console.log({ token, "user token": user.resetPasswordToken });
+  console.log({ email, token, "user token": user.resetPasswordToken });
 
   if (user.resetPasswordToken === token) {
+    console.log("chinh xac");
     return res.json({ message: "token chinh xac" });
   } else {
+    console.log("sai");
     return res.json({ message: "token sai" });
   }
 };
