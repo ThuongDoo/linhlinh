@@ -18,8 +18,6 @@ const forgotPassword = async (req, res) => {
   if (!user) {
     return res.status(400).send("Email không tồn tại");
   }
-  console.log(user);
-  console.log("hio");
   const token = crypto.randomBytes(3).toString("hex");
   const expiry = Date.now() + 3600000; // Thời hạn 1 giờ
   user.resetPasswordToken = token;
@@ -31,6 +29,9 @@ const forgotPassword = async (req, res) => {
     text: `Nhap ma khoi phuc ${token}`,
   });
   await user.save();
+
+  console.log("send token");
+  console.log({ email, token });
 
   res.send("Email khôi phục mật khẩu đã được gửi");
 };
@@ -85,6 +86,9 @@ const checkToken = async (req, res) => {
   if (user.resetPasswordExpiry < Date.now()) {
     return res.status(400).json({ message: "token hết hạn" });
   }
+  console.log("check token");
+  console.log({ token, "user token": user.resetPasswordToken });
+
   if (user.resetPasswordToken === token) {
     return res.json({ message: "token chinh xac" });
   } else {
