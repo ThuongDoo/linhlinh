@@ -22,7 +22,9 @@ const forgotPassword = async (req, res) => {
   const expiry = Date.now() + 3600000; // Thời hạn 1 giờ
   user.resetPasswordToken = token;
   user.resetPasswordExpiry = expiry;
-  await user.save();
+  await user.save().then(() => {
+    console.log("save token", token);
+  });
 
   transporter.sendMail({
     to: email,
