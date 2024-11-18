@@ -85,6 +85,8 @@ const getAll = async (req, res) => {
 };
 
 const checkToken = async (req, res) => {
+  console.log("req body");
+  console.log(req.body);
   const { token, email } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
