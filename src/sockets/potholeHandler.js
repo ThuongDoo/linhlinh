@@ -19,7 +19,7 @@ const getPotholes = async (io, socket, payload) => {
     );
     return potholes;
   };
-  const findClosestPoint = (points, location) => {
+  const findClosestPoint = async (points, location) => {
     let closestPoint = null;
     let minDistance = alertDistance;
 
@@ -43,8 +43,9 @@ const getPotholes = async (io, socket, payload) => {
     return closestPoint;
   };
   const { location, prevLocation } = payload;
-  const potholes = findSurroundPothole(location);
-  const closetPot = findClosestPoint(potholes, location);
+
+  const potholes = await findSurroundPothole(location);
+  const closetPot = await findClosestPoint(potholes, location);
 
   //check va cham
   if (closetPot !== null) {
